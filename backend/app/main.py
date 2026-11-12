@@ -1,4 +1,7 @@
 from fastapi import FastAPI
+from sqlalchemy import text
+
+from app.db.session import engine
 
 app = FastAPI(
     title="Task Manager API",
@@ -15,3 +18,13 @@ def root():
 @app.get("/health")
 def health_check():
     return {"status": "healthy"}
+
+@app.get("/health/db")
+def database_health_check():
+    with engine.connect() as connection:
+        result = connection.execute(text("SELECT 1"))
+
+    return {
+        "database": "connected",
+        "test_query": result.scalar(),
+    }
