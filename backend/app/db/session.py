@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 
 from app.core.config import settings
 
-
+# safely constructs the connection URL, including when your password contains special characters
 DATABASE_URL = URL.create(
     drivername="postgresql+psycopg",
     username=settings.DB_USER,
@@ -15,8 +15,10 @@ DATABASE_URL = URL.create(
     database=settings.DB_NAME,
 )
 
+# creates SQLAlchemy's connection engine
 engine = create_engine(
     DATABASE_URL,
+    # prints SQL statements to the terminal
     echo=True,
 )
 
