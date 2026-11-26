@@ -1,13 +1,14 @@
 from fastapi import FastAPI
-from sqlalchemy import text
 
-from app.db.session import engine
+from app.api.v1.endpoints.auth import router as auth_router
 
 app = FastAPI(
     title="Task Manager API",
-    description="A full-stack task management application",
-    version="1.0.0"
+    description="A task management API built with FastAPI and PostgreSQL.",
+    version="1.0.0",
 )
+
+app.include_router(auth_router, prefix="/api/v1")
 
 
 @app.get("/")
@@ -18,13 +19,3 @@ def root():
 @app.get("/health")
 def health_check():
     return {"status": "healthy"}
-
-@app.get("/health/db")
-def database_health_check():
-    with engine.connect() as connection:
-        result = connection.execute(text("SELECT 1"))
-
-    return {
-        "database": "connected",
-        "test_query": result.scalar(),
-    }

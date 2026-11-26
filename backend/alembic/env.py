@@ -7,6 +7,9 @@ from sqlalchemy import pool
 from app.db.base import Base
 from app.db.session import engine
 
+import app.models.user
+import app.models.item
+
 config = context.config
 
 if config.config_file_name is not None:
